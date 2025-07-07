@@ -2,7 +2,7 @@
 
 Rails.application.config.middleware.insert_before 0, Rack::Cors do
   allow do
-    origins 'localhost:3001' # Your Next.js frontend URL
+    origins 'localhost:3001', "https://vacation-requests-manager.vercel.app"
     
     resource '*',
       headers: :any,

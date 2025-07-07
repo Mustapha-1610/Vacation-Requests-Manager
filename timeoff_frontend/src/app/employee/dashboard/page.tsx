@@ -57,11 +57,14 @@ export default function EmployeeDashboard() {
   const fetchRequests = async (): Promise<void> => {
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch("http://localhost:3000/my_requests", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await fetch(
+        "https://vacation-requests-manager.onrender.com/my_requests",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       if (response.ok) {
         const data: TimeOffRequest[] = await response.json();
@@ -80,18 +83,21 @@ export default function EmployeeDashboard() {
 
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch("http://localhost:3000/time_off_requests", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          start_date: startDate,
-          end_date: endDate,
-          reason: reason,
-        }),
-      });
+      const response = await fetch(
+        "https://vacation-requests-manager.onrender.com/time_off_requests",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            start_date: startDate,
+            end_date: endDate,
+            reason: reason,
+          }),
+        }
+      );
 
       if (response.ok) {
         setShowRequestForm(false);

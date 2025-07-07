@@ -82,11 +82,14 @@ export default function AdminDashboard() {
   const fetchRequests = async (): Promise<void> => {
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch("http://localhost:3000/time_off_requests", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await fetch(
+        "https://vacation-requests-manager.onrender.com/time_off_requests",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       if (response.ok) {
         const data: TimeOffRequest[] = await response.json();
@@ -108,7 +111,7 @@ export default function AdminDashboard() {
     try {
       const token = localStorage.getItem("token");
       const response = await fetch(
-        `http://localhost:3000/time_off_requests/${requestId}/status`,
+        `https://vacation-requests-manager.onrender.com/time_off_requests/${requestId}/status`,
         {
           method: "PATCH",
           headers: {

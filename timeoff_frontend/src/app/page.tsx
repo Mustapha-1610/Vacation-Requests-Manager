@@ -36,13 +36,16 @@ export default function LoginPage() {
     try {
       const body = isLogin ? { email, password } : { name, email, password };
 
-      const response = await fetch(`http://127.0.0.1:3000/auth/login`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(body),
-      });
+      const response = await fetch(
+        `https://vacation-requests-manager.onrender.com/auth/login`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(body),
+        }
+      );
 
       const data: AuthResponse | AuthError = await response.json();
 
@@ -99,7 +102,7 @@ export default function LoginPage() {
         {/* Main Card */}
         <div className="bg-white rounded-2xl shadow-xl border border-gray-200 overflow-hidden">
           <div className="p-8">
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <form onSubmit={handleSubmit} className="space-y-6 text-black">
               {!isLogin && (
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
