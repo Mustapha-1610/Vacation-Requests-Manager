@@ -34,7 +34,6 @@ export default function LoginPage() {
     setError("");
 
     try {
-      const endpoint = isLogin ? "/auth/login" : "/auth/register";
       const body = isLogin ? { email, password } : { name, email, password };
 
       const response = await fetch(`http://127.0.0.1:3000/auth/login`, {
@@ -62,6 +61,7 @@ export default function LoginPage() {
         setError(errorData.error || "Something went wrong");
       }
     } catch (err) {
+      console.log(err);
       setError("Network error. Please try again.");
     } finally {
       setLoading(false);

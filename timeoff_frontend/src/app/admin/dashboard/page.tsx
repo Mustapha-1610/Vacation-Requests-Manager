@@ -476,7 +476,7 @@ export default function AdminDashboard() {
 
               <div className="bg-slate-50 p-4 rounded-xl mb-4">
                 <p className="text-slate-900 font-medium mb-2">
-                  {selectedRequest.user_name}'s Request
+                  {selectedRequest.user_name}&apos;s Request
                 </p>
                 <p className="text-sm text-slate-600">
                   {formatDate(selectedRequest.start_date)} -{" "}

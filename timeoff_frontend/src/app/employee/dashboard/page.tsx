@@ -337,7 +337,8 @@ export default function EmployeeDashboard() {
                 </div>
                 <p className="text-gray-900 font-medium">No requests yet</p>
                 <p className="text-gray-600 mt-1">
-                  Click "Request Time Off" to create your first request
+                  Click &ldquo;Request Time Off&ldquo; to create your first
+                  request
                 </p>
               </div>
             ) : (
