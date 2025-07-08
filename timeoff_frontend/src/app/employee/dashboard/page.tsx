@@ -2,6 +2,8 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 interface User {
   id: number;
@@ -29,9 +31,9 @@ export default function EmployeeDashboard() {
   const [loading, setLoading] = useState<boolean>(true);
   const router = useRouter();
 
-  // Form state
-  const [startDate, setStartDate] = useState<string>("");
-  const [endDate, setEndDate] = useState<string>("");
+  // Form state - using Date objects for better date handling
+  const [startDate, setStartDate] = useState<Date | null>(null);
+  const [endDate, setEndDate] = useState<Date | null>(null);
   const [reason, setReason] = useState<string>("");
   const [submitting, setSubmitting] = useState<boolean>(false);
 
@@ -77,8 +79,14 @@ export default function EmployeeDashboard() {
     }
   };
 
+  const formatDateForAPI = (date: Date): string => {
+    return date.toISOString().split("T")[0];
+  };
+
   const handleSubmitRequest = async (e: React.FormEvent): Promise<void> => {
     e.preventDefault();
+    if (!startDate || !endDate) return;
+
     setSubmitting(true);
 
     try {
@@ -92,8 +100,8 @@ export default function EmployeeDashboard() {
             Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({
-            start_date: startDate,
-            end_date: endDate,
+            start_date: formatDateForAPI(startDate),
+            end_date: formatDateForAPI(endDate),
             reason: reason,
           }),
         }
@@ -101,8 +109,8 @@ export default function EmployeeDashboard() {
 
       if (response.ok) {
         setShowRequestForm(false);
-        setStartDate("");
-        setEndDate("");
+        setStartDate(null);
+        setEndDate(null);
         setReason("");
         fetchRequests();
       }
@@ -110,6 +118,14 @@ export default function EmployeeDashboard() {
       console.error("Error submitting request:", error);
     } finally {
       setSubmitting(false);
+    }
+  };
+
+  const handleStartDateChange = (date: Date | null) => {
+    setStartDate(date);
+    // Reset end date if it's before the new start date
+    if (date && endDate && endDate < date) {
+      setEndDate(null);
     }
   };
 
@@ -141,6 +157,9 @@ export default function EmployeeDashboard() {
     }
   };
 
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center">
@@ -154,6 +173,109 @@ export default function EmployeeDashboard() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
+      {/* Custom DatePicker Styles */}
+      <style jsx global>{`
+        .react-datepicker-wrapper {
+          width: 100%;
+        }
+        .react-datepicker__input-container {
+          width: 100%;
+        }
+        .react-datepicker__input-container input {
+          width: 100%;
+          padding: 12px 16px;
+          border: 1px solid #d1d5db;
+          border-radius: 12px;
+          background-color: #f9fafb;
+          transition: all 0.2s;
+          font-size: 14px;
+        }
+        .react-datepicker__input-container input:focus {
+          outline: none;
+          border-color: transparent;
+          background-color: white;
+          box-shadow: 0 0 0 2px #111827;
+        }
+        .react-datepicker {
+          border: 1px solid #e5e7eb;
+          border-radius: 16px;
+          box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+            0 10px 10px -5px rgba(0, 0, 0, 0.04);
+          font-family: inherit;
+        }
+        .react-datepicker__header {
+          background-color: #111827;
+          border-bottom: 1px solid #374151;
+          border-radius: 15px 15px 0 0;
+          padding: 16px 0;
+        }
+        .react-datepicker__current-month {
+          color: white;
+          font-weight: 600;
+          font-size: 16px;
+        }
+        .react-datepicker__day-name {
+          color: #d1d5db;
+          font-weight: 500;
+          font-size: 12px;
+        }
+        .react-datepicker__day {
+          color: #374151;
+          font-weight: 500;
+          border-radius: 8px;
+          margin: 2px;
+          transition: all 0.2s;
+        }
+        .react-datepicker__day:hover {
+          background-color: #f3f4f6;
+          color: #111827;
+        }
+        .react-datepicker__day--selected {
+          background-color: #111827;
+          color: white;
+        }
+        .react-datepicker__day--selected:hover {
+          background-color: #374151;
+        }
+        .react-datepicker__day--keyboard-selected {
+          background-color: #f3f4f6;
+          color: #111827;
+        }
+        .react-datepicker__day--disabled {
+          color: #d1d5db;
+          cursor: not-allowed;
+        }
+        .react-datepicker__day--disabled:hover {
+          background-color: transparent;
+        }
+        .react-datepicker__navigation {
+          top: 22px;
+        }
+        .react-datepicker__navigation--previous {
+          border-right-color: white;
+        }
+        .react-datepicker__navigation--next {
+          border-left-color: white;
+        }
+        .react-datepicker__navigation:hover *::before {
+          border-color: #d1d5db;
+        }
+        .react-datepicker__day--today {
+          background-color: #dbeafe;
+          color: #1e40af;
+          font-weight: 600;
+        }
+        .react-datepicker__day--in-range {
+          background-color: #f3f4f6;
+          color: #111827;
+        }
+        .react-datepicker__day--range-start,
+        .react-datepicker__day--range-end {
+          background-color: #111827;
+          color: white;
+        }
+      `}</style>
+
       {/* Header */}
       <header className="bg-white shadow-sm border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -343,8 +465,7 @@ export default function EmployeeDashboard() {
                 </div>
                 <p className="text-gray-900 font-medium">No requests yet</p>
                 <p className="text-gray-600 mt-1">
-                  Click &ldquo;Request Time Off&ldquo; to create your first
-                  request
+                  Click "Request Time Off" to create your first request
                 </p>
               </div>
             ) : (
@@ -419,24 +540,29 @@ export default function EmployeeDashboard() {
                   <label className="block text-sm font-medium text-gray-900 mb-2">
                     Start Date
                   </label>
-                  <input
-                    type="date"
+                  <DatePicker
+                    selected={startDate}
+                    onChange={handleStartDateChange}
+                    minDate={today}
+                    dateFormat="yyyy-MM-dd"
+                    placeholderText="Select start date"
+                    className="w-full"
                     required
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-gray-900 focus:border-transparent bg-gray-50 focus:bg-white transition-all duration-200"
-                    value={startDate}
-                    onChange={(e) => setStartDate(e.target.value)}
                   />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-900 mb-2">
                     End Date
                   </label>
-                  <input
-                    type="date"
+                  <DatePicker
+                    selected={endDate}
+                    onChange={setEndDate}
+                    minDate={startDate || today}
+                    dateFormat="yyyy-MM-dd"
+                    placeholderText="Select end date"
+                    className="w-full"
                     required
-                    className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-gray-900 focus:border-transparent bg-gray-50 focus:bg-white transition-all duration-200"
-                    value={endDate}
-                    onChange={(e) => setEndDate(e.target.value)}
+                    disabled={!startDate}
                   />
                 </div>
                 <div>
@@ -455,14 +581,19 @@ export default function EmployeeDashboard() {
                 <div className="flex space-x-4">
                   <button
                     type="button"
-                    onClick={() => setShowRequestForm(false)}
+                    onClick={() => {
+                      setShowRequestForm(false);
+                      setStartDate(null);
+                      setEndDate(null);
+                      setReason("");
+                    }}
                     className="flex-1 px-4 py-3 border border-gray-300 text-gray-700 rounded-xl hover:bg-gray-50 font-medium transition-all duration-200"
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
-                    disabled={submitting}
+                    disabled={submitting || !startDate || !endDate}
                     className="flex-1 bg-gray-900 text-white px-4 py-3 rounded-xl hover:bg-gray-800 font-medium transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     {submitting ? "Submitting..." : "Submit Request"}

@@ -34,10 +34,11 @@ export default function LoginPage() {
     setError("");
 
     try {
+      const endpoint = isLogin ? "/auth/login" : "/auth/register";
       const body = isLogin ? { email, password } : { name, email, password };
 
       const response = await fetch(
-        `https://vacation-requests-manager.onrender.com/auth/login`,
+        `https://vacation-requests-manager.onrender.com${endpoint}`,
         {
           method: "POST",
           headers: {
@@ -54,6 +55,7 @@ export default function LoginPage() {
         localStorage.setItem("token", authData.token);
         localStorage.setItem("user", JSON.stringify(authData.user));
 
+        // Redirect based on user role
         if (authData.user.role === "admin") {
           router.push("/admin/dashboard");
         } else {
@@ -64,11 +66,27 @@ export default function LoginPage() {
         setError(errorData.error || "Something went wrong");
       }
     } catch (err) {
-      console.log(err);
+      console.error("Auth error:", err);
       setError("Network error. Please try again.");
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleModeSwitch = () => {
+    setIsLogin(!isLogin);
+    setError("");
+    setName("");
+  };
+
+  const fillDemoCredentials = (type: "admin" | "employee") => {
+    if (type === "admin") {
+      setEmail("admin@company.com");
+    } else {
+      setEmail("john@company.com");
+    }
+    setPassword("password123");
+    setError(""); // Clear any existing errors
   };
 
   return (
@@ -194,7 +212,7 @@ export default function LoginPage() {
               <button
                 type="button"
                 className="text-gray-600 hover:text-gray-900 font-medium transition-colors duration-200"
-                onClick={() => setIsLogin(!isLogin)}
+                onClick={handleModeSwitch}
               >
                 {isLogin
                   ? "Don't have an account? Sign up"
@@ -203,25 +221,35 @@ export default function LoginPage() {
             </div>
           </div>
 
-          {/* Demo Accounts */}
-          <div className="bg-gray-50 px-8 py-6 border-t border-gray-200">
-            <h3 className="text-sm font-medium text-gray-900 mb-3">
-              Demo Accounts
-            </h3>
-            <div className="space-y-2 text-sm">
-              <div className="flex justify-between items-center p-3 bg-white rounded-lg border">
-                <span className="font-medium text-gray-700">Admin</span>
-                <span className="text-gray-600">admin@company.com</span>
+          {/* Demo Accounts - Only show during login */}
+          {isLogin && (
+            <div className="bg-gray-50 px-8 py-6 border-t border-gray-200">
+              <h3 className="text-sm font-medium text-gray-900 mb-3">
+                Demo Accounts
+              </h3>
+              <div className="space-y-2 text-sm">
+                <button
+                  type="button"
+                  onClick={() => fillDemoCredentials("admin")}
+                  className="w-full flex justify-between items-center p-3 bg-white rounded-lg border hover:bg-gray-50 transition-colors duration-200"
+                >
+                  <span className="font-medium text-gray-700">Admin</span>
+                  <span className="text-gray-600">admin@company.com</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => fillDemoCredentials("employee")}
+                  className="w-full flex justify-between items-center p-3 bg-white rounded-lg border hover:bg-gray-50 transition-colors duration-200"
+                >
+                  <span className="font-medium text-gray-700">Employee</span>
+                  <span className="text-gray-600">john@company.com</span>
+                </button>
+                <p className="text-xs text-gray-500 mt-2 text-center">
+                  Password for both: password123 • Click to auto-fill
+                </p>
               </div>
-              <div className="flex justify-between items-center p-3 bg-white rounded-lg border">
-                <span className="font-medium text-gray-700">Employee</span>
-                <span className="text-gray-600">john@company.com</span>
-              </div>
-              <p className="text-xs text-gray-500 mt-2 text-center">
-                Password for both: password123
-              </p>
             </div>
-          </div>
+          )}
         </div>
       </div>
     </div>

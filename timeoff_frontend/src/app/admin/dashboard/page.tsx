@@ -195,7 +195,7 @@ export default function AdminDashboard() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 flex items-center justify-center px-4">
         <div className="bg-white rounded-2xl shadow-xl p-8 flex items-center space-x-4">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-slate-900"></div>
           <span className="text-slate-900 font-medium">
@@ -209,104 +209,112 @@ export default function AdminDashboard() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
       {/* Header */}
-      <header className="bg-white/80 backdrop-blur-sm border-b border-slate-200">
-        <div className="max-w-7xl mx-auto px-6 py-4">
+      <header className="bg-white/80 backdrop-blur-sm border-b border-slate-200 sticky top-0 z-40">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-4">
               <div className="bg-gradient-to-r from-slate-900 to-slate-700 p-3 rounded-xl">
                 <Users className="w-6 h-6 text-white" />
               </div>
               <div>
-                <h1 className="text-2xl font-bold text-slate-900">
+                <h1 className="text-xl sm:text-2xl font-bold text-slate-900">
                   Admin Dashboard
                 </h1>
-                <p className="text-slate-600">Welcome back, {user?.name}</p>
+                <p className="text-slate-600 text-sm sm:text-base">
+                  Welcome back, {user?.name}
+                </p>
               </div>
             </div>
             <button
               onClick={handleLogout}
-              className="flex items-center space-x-2 px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-xl transition-colors duration-200"
+              className="flex items-center space-x-2 px-3 sm:px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-xl transition-colors duration-200"
             >
               <LogOut className="w-4 h-4" />
-              <span>Logout</span>
+              <span className="hidden sm:inline">Logout</span>
             </button>
           </div>
         </div>
       </header>
 
-      <main className="max-w-7xl mx-auto px-6 py-8">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 py-6 sm:py-8">
         {/* Stats Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-          <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-200">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-6 sm:mb-8">
+          <div className="bg-white rounded-2xl p-4 sm:p-6 shadow-sm border border-slate-200">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-slate-600 text-sm font-medium">
+                <p className="text-slate-600 text-xs sm:text-sm font-medium">
                   Total Requests
                 </p>
-                <p className="text-3xl font-bold text-slate-900 mt-1">
+                <p className="text-2xl sm:text-3xl font-bold text-slate-900 mt-1">
                   {requests.length}
                 </p>
               </div>
-              <div className="bg-slate-100 p-3 rounded-xl">
-                <Calendar className="w-6 h-6 text-slate-700" />
+              <div className="bg-slate-100 p-2 sm:p-3 rounded-xl">
+                <Calendar className="w-5 h-5 sm:w-6 sm:h-6 text-slate-700" />
               </div>
             </div>
           </div>
 
-          <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-200">
+          <div className="bg-white rounded-2xl p-4 sm:p-6 shadow-sm border border-slate-200">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-slate-600 text-sm font-medium">Pending</p>
-                <p className="text-3xl font-bold text-amber-600 mt-1">
+                <p className="text-slate-600 text-xs sm:text-sm font-medium">
+                  Pending
+                </p>
+                <p className="text-2xl sm:text-3xl font-bold text-amber-600 mt-1">
                   {getStatusCount("pending")}
                 </p>
               </div>
-              <div className="bg-amber-100 p-3 rounded-xl">
-                <Clock className="w-6 h-6 text-amber-600" />
+              <div className="bg-amber-100 p-2 sm:p-3 rounded-xl">
+                <Clock className="w-5 h-5 sm:w-6 sm:h-6 text-amber-600" />
               </div>
             </div>
           </div>
 
-          <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-200">
+          <div className="bg-white rounded-2xl p-4 sm:p-6 shadow-sm border border-slate-200">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-slate-600 text-sm font-medium">Approved</p>
-                <p className="text-3xl font-bold text-emerald-600 mt-1">
+                <p className="text-slate-600 text-xs sm:text-sm font-medium">
+                  Approved
+                </p>
+                <p className="text-2xl sm:text-3xl font-bold text-emerald-600 mt-1">
                   {getStatusCount("approved")}
                 </p>
               </div>
-              <div className="bg-emerald-100 p-3 rounded-xl">
-                <CheckCircle className="w-6 h-6 text-emerald-600" />
+              <div className="bg-emerald-100 p-2 sm:p-3 rounded-xl">
+                <CheckCircle className="w-5 h-5 sm:w-6 sm:h-6 text-emerald-600" />
               </div>
             </div>
           </div>
 
-          <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-200">
+          <div className="bg-white rounded-2xl p-4 sm:p-6 shadow-sm border border-slate-200">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-slate-600 text-sm font-medium">Rejected</p>
-                <p className="text-3xl font-bold text-red-600 mt-1">
+                <p className="text-slate-600 text-xs sm:text-sm font-medium">
+                  Rejected
+                </p>
+                <p className="text-2xl sm:text-3xl font-bold text-red-600 mt-1">
                   {getStatusCount("rejected")}
                 </p>
               </div>
-              <div className="bg-red-100 p-3 rounded-xl">
-                <XCircle className="w-6 h-6 text-red-600" />
+              <div className="bg-red-100 p-2 sm:p-3 rounded-xl">
+                <XCircle className="w-5 h-5 sm:w-6 sm:h-6 text-red-600" />
               </div>
             </div>
           </div>
         </div>
 
         {/* Filter Section */}
-        <div className="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 mb-8">
+        <div className="bg-white rounded-2xl p-4 sm:p-6 shadow-sm border border-slate-200 mb-6 sm:mb-8">
           <div className="flex items-center justify-between mb-4">
-            <h2 className="text-xl font-bold text-slate-900">
+            <h2 className="text-lg sm:text-xl font-bold text-slate-900">
               Time Off Requests
             </h2>
             <Filter className="w-5 h-5 text-slate-600" />
           </div>
-          <div className="flex flex-wrap gap-3">
+          <div className="grid grid-cols-2 sm:flex sm:flex-wrap gap-2 sm:gap-3">
             {[
-              { key: "all", label: "All Requests", count: requests.length },
+              { key: "all", label: "All", count: requests.length },
               {
                 key: "pending",
                 label: "Pending",
@@ -326,13 +334,16 @@ export default function AdminDashboard() {
               <button
                 key={key}
                 onClick={() => setFilter(key as FilterType)}
-                className={`px-4 py-2 rounded-xl text-sm font-medium transition-all duration-200 ${
+                className={`px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-medium transition-all duration-200 ${
                   filter === key
                     ? "bg-slate-900 text-white shadow-lg"
                     : "bg-slate-100 text-slate-700 hover:bg-slate-200"
                 }`}
               >
-                {label} ({count})
+                <span className="sm:hidden">{label}</span>
+                <span className="hidden sm:inline">
+                  {label} ({count})
+                </span>
               </button>
             ))}
           </div>
@@ -341,7 +352,7 @@ export default function AdminDashboard() {
         {/* Requests List */}
         <div className="space-y-4">
           {filteredRequests.length === 0 ? (
-            <div className="bg-white rounded-2xl p-12 shadow-sm border border-slate-200 text-center">
+            <div className="bg-white rounded-2xl p-8 sm:p-12 shadow-sm border border-slate-200 text-center">
               <AlertCircle className="w-12 h-12 text-slate-400 mx-auto mb-4" />
               <p className="text-slate-600 text-lg">No requests found</p>
               <p className="text-slate-400 text-sm mt-2">
@@ -354,25 +365,29 @@ export default function AdminDashboard() {
             filteredRequests.map((request) => (
               <div
                 key={request.id}
-                className="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 hover:shadow-md transition-shadow duration-200"
+                className="bg-white rounded-2xl p-4 sm:p-6 shadow-sm border border-slate-200 hover:shadow-md transition-shadow duration-200"
               >
-                <div className="flex items-start justify-between">
+                <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between space-y-4 lg:space-y-0">
                   <div className="flex-1">
-                    <div className="flex items-center space-x-3 mb-3">
-                      <div className="bg-slate-100 p-2 rounded-lg">
-                        <User className="w-5 h-5 text-slate-700" />
-                      </div>
-                      <div>
-                        <h3 className="text-lg font-semibold text-slate-900">
-                          {request.user_name}
-                        </h3>
-                        <div className="flex items-center space-x-2 text-sm text-slate-600">
-                          <Mail className="w-4 h-4" />
-                          <span>{request.user_email}</span>
+                    <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-3">
+                      <div className="flex items-center space-x-3 mb-2 sm:mb-0">
+                        <div className="bg-slate-100 p-2 rounded-lg">
+                          <User className="w-5 h-5 text-slate-700" />
+                        </div>
+                        <div>
+                          <h3 className="text-lg font-semibold text-slate-900">
+                            {request.user_name}
+                          </h3>
+                          <div className="flex items-center space-x-2 text-sm text-slate-600">
+                            <Mail className="w-4 h-4" />
+                            <span className="break-all">
+                              {request.user_email}
+                            </span>
+                          </div>
                         </div>
                       </div>
                       <div
-                        className={`flex items-center space-x-2 px-3 py-1 rounded-full border ${getStatusColor(
+                        className={`flex items-center space-x-2 px-3 py-1 rounded-full border self-start sm:self-center ${getStatusColor(
                           request.status
                         )}`}
                       >
@@ -383,7 +398,7 @@ export default function AdminDashboard() {
                       </div>
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-4">
                       <div className="bg-slate-50 p-4 rounded-xl">
                         <div className="flex items-center space-x-2 mb-2">
                           <Calendar className="w-4 h-4 text-slate-600" />
@@ -391,7 +406,7 @@ export default function AdminDashboard() {
                             Duration
                           </span>
                         </div>
-                        <p className="text-slate-900 font-semibold">
+                        <p className="text-slate-900 font-semibold text-sm sm:text-base">
                           {formatDate(request.start_date)} -{" "}
                           {formatDate(request.end_date)}
                         </p>
@@ -408,7 +423,7 @@ export default function AdminDashboard() {
                             Reason
                           </span>
                         </div>
-                        <p className="text-slate-900 font-medium">
+                        <p className="text-slate-900 font-medium text-sm sm:text-base break-words">
                           {request.reason}
                         </p>
                         <p className="text-sm text-slate-600 mt-1">
@@ -425,19 +440,21 @@ export default function AdminDashboard() {
                             Admin Note
                           </span>
                         </div>
-                        <p className="text-red-800">{request.admin_note}</p>
+                        <p className="text-red-800 text-sm sm:text-base break-words">
+                          {request.admin_note}
+                        </p>
                       </div>
                     )}
                   </div>
 
                   {request.status === "pending" && (
-                    <div className="flex space-x-3 ml-6">
+                    <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-3 lg:ml-6">
                       <button
                         onClick={() =>
                           handleStatusUpdate(request.id, "approved")
                         }
                         disabled={processingId === request.id}
-                        className="flex items-center space-x-2 px-4 py-2 bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="flex items-center justify-center space-x-2 px-4 py-2 bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                       >
                         <CheckCircle className="w-4 h-4" />
                         <span>
@@ -449,7 +466,7 @@ export default function AdminDashboard() {
                       <button
                         onClick={() => handleReject(request)}
                         disabled={processingId === request.id}
-                        className="flex items-center space-x-2 px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-xl transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="flex items-center justify-center space-x-2 px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded-xl transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                       >
                         <XCircle className="w-4 h-4" />
                         <span>Reject</span>
@@ -466,7 +483,7 @@ export default function AdminDashboard() {
       {/* Reject Modal */}
       {showModal && selectedRequest && (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md">
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md max-h-[90vh] overflow-y-auto">
             <div className="p-6">
               <div className="flex items-center space-x-3 mb-4">
                 <div className="bg-red-100 p-2 rounded-lg">
@@ -478,14 +495,14 @@ export default function AdminDashboard() {
               </div>
 
               <div className="bg-slate-50 p-4 rounded-xl mb-4">
-                <p className="text-slate-900 font-medium mb-2">
+                <p className="text-slate-900 font-medium mb-2 break-words">
                   {selectedRequest.user_name}&apos;s Request
                 </p>
                 <p className="text-sm text-slate-600">
                   {formatDate(selectedRequest.start_date)} -{" "}
                   {formatDate(selectedRequest.end_date)}
                 </p>
-                <p className="text-sm text-slate-600 mt-1">
+                <p className="text-sm text-slate-600 mt-1 break-words">
                   Reason: {selectedRequest.reason}
                 </p>
               </div>
@@ -495,7 +512,7 @@ export default function AdminDashboard() {
                   Reason for rejection (optional)
                 </label>
                 <textarea
-                  className="w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-slate-900 focus:border-slate-900 text-slate-900 placeholder-slate-400"
+                  className="w-full px-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-slate-900 focus:border-slate-900 text-slate-900 placeholder-slate-400 resize-none"
                   rows={4}
                   value={adminNote}
                   onChange={(e) => setAdminNote(e.target.value)}
@@ -503,7 +520,7 @@ export default function AdminDashboard() {
                 />
               </div>
 
-              <div className="flex space-x-3">
+              <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-3">
                 <button
                   onClick={() => {
                     setShowModal(false);
